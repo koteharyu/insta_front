@@ -3,8 +3,13 @@ import { Flex, Heading, Box, Link, useDisclosure } from '@chakra-ui/react'
 import { useHistory } from 'react-router-dom'
 import { MenuIconButton } from "../atoms/button/MenuIconButton";
 import { MenuDrawer } from "../molecules/MenuDrawer";
+import { useRecoilState } from 'recoil'
+import { userState } from '../../store/userState'
+import { useMessage } from '../../hooks/useMessage'
 
 export const Header: VFC = memo(() => {
+
+  const [authenticatedUser, setAuthenticatedUser] = useRecoilState(userState)
 
   const history = useHistory()
 
@@ -13,6 +18,13 @@ export const Header: VFC = memo(() => {
   const onClickTimeLine = () => history.push('/')
   const onClickLogin = () => history.push('/login')
   const onClickSignUp = () => history.push('/signup')
+
+  const logout = () => {
+    setAuthenticatedUser(null)
+    showMessage({ title: "logout", status: "success" })
+  }
+
+  const { showMessage } = useMessage()
 
   return (
     <>
@@ -36,6 +48,20 @@ export const Header: VFC = memo(() => {
               Sign Up
             </Link>
           </Box>
+          {authenticatedUser &&
+            <>
+              <Box pr={4}>
+                <Link>
+                  {authenticatedUser.user.name}
+                </Link>
+              </Box>
+              <Box>
+                <Link onClick={logout}>
+                  Log out
+                </Link>
+              </Box>
+            </>
+          }
         </Flex>
         <MenuIconButton onOpen={onOpen} />
       </Flex>

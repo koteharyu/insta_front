@@ -5,7 +5,8 @@ import { useHistory } from 'react-router-dom'
 import axios from 'axios';
 import { User } from "../../types/api/User";
 import { useMessage } from '../../hooks/useMessage'
-
+import { useRecoilState } from 'recoil'
+import { userState } from '../../store/userState'
 
 const CFaLock = chakra(FaLock);
 const CFaEmail = chakra(FaVoicemail)
@@ -25,6 +26,8 @@ export const Login: VFC = memo(() => {
 
   const { showMessage } = useMessage()
 
+  const [authenticatedUser, setAuthenticatedUser] = useRecoilState(userState)
+
   const createSessionParams = () => {
     const sessionParams = new FormData()
     sessionParams.append('session[email]', email)
@@ -36,7 +39,8 @@ export const Login: VFC = memo(() => {
     const data = createSessionParams()
     axios.post<User>('http://localhost:3001/api/v1/session', data)
       .then((res) => {
-        if (res) {
+        if (res.data) {
+          setAuthenticatedUser(res.data)
           history.push('/signup')
           showMessage({ title: "logged in", status: "success" })
         }

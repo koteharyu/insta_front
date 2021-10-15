@@ -5,6 +5,8 @@ import axios from "axios";
 import { User } from "../../types/api/User";
 import { useHistory } from "react-router";
 import { useMessage } from '../../hooks/useMessage'
+import { useRecoilState } from 'recoil'
+import { userState } from '../../store/userState'
 
 const CFaUserAlt = chakra(FaUserAlt);
 const CFaLock = chakra(FaLock);
@@ -26,6 +28,8 @@ export const SignUp: VFC = memo(() => {
 
   const history = useHistory()
 
+  const [authenticatedUser, setAuthenticatedUser] = useRecoilState(userState)
+
   const { showMessage } = useMessage()
 
   const createUserParams = () => {
@@ -42,8 +46,9 @@ export const SignUp: VFC = memo(() => {
     axios.post<User>('http://localhost:3001/api/v1/users', userParams)
       .then((res) => {
         if (res.data) {
+          setAuthenticatedUser(res.data)
           history.push('/')
-          showMessage({ title: "Sing Up", status: "success"})
+          showMessage({ title: "Sing Up", status: "success" })
         }
       })
       .catch((e) => {
