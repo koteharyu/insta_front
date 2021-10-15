@@ -32,19 +32,29 @@ export const Login: VFC = memo(() => {
     return sessionParams
   }
 
-  const sendSessionParams = () => {
+  const login = () => {
     const data = createSessionParams()
     axios.post<User>('http://localhost:3001/api/v1/session', data)
       .then((res) => {
-        if (res.data) {
+        if (res) {
           history.push('/signup')
           showMessage({ title: "logged in", status: "success" })
         }
       })
       .catch((e) => {
         console.error(e)
-        showMessage({ title: "faild to login", status: "warning"})
+        showMessage({ title: "faild to login", status: "warning" })
       })
+
+    // fetch('http://localhost:3001/api/v1/session', {
+    //   method: "POST",
+    //   headers: {"Content-Type": "application/json"},
+    //   body: data
+    // }).then((res) => res.json())
+    // .then((data) => {
+    //   console.log(data.token)
+    //   localStorage.setItem("token", data.token)
+    // })
   }
 
   return (
@@ -105,7 +115,7 @@ export const Login: VFC = memo(() => {
                 </FormHelperText>
               </FormControl>
               <Button
-                onClick={sendSessionParams}
+                onClick={login}
                 borderRadius={0}
                 variant="solid"
                 colorScheme="teal"
