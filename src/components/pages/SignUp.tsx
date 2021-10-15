@@ -1,5 +1,5 @@
 import { memo, useState, VFC } from "react";
-import { Flex, Heading, Input, Button, InputGroup, Stack, InputLeftElement, chakra, Box, Link, Avatar, FormControl, FormHelperText, InputRightElement } from "@chakra-ui/react";
+import { Flex, Heading, Input, Button, InputGroup, Stack, InputLeftElement, chakra, Box, Link, Avatar, FormControl, InputRightElement } from "@chakra-ui/react";
 import { FaUserAlt, FaLock, FaVoicemail } from "react-icons/fa";
 
 const CFaUserAlt = chakra(FaUserAlt);
@@ -93,12 +93,11 @@ export const SignUp: VFC = memo(() => {
               </FormControl>
               <Button
                 borderRadius={0}
-                type="submit"
                 variant="solid"
                 colorScheme="teal"
                 width="full"
               >
-                Login
+                Sign Up
               </Button>
             </Stack>
           </form>

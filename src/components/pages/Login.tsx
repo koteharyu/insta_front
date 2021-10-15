@@ -1,15 +1,49 @@
-import { memo, useState, VFC } from "react";
+import { ChangeEvent, memo, useState, VFC } from "react";
 import { Flex, Heading, Input, Button, InputGroup, Stack, InputLeftElement, chakra, Box, Link, Avatar, FormControl, FormHelperText, InputRightElement } from "@chakra-ui/react";
-import { FaUserAlt, FaLock } from "react-icons/fa";
+import { FaVoicemail, FaLock } from "react-icons/fa";
+import { useHistory } from 'react-router-dom'
+import axios from 'axios';
+import { User } from "../../types/api/User";
+import { useMessage } from '../../hooks/useMessage'
 
-const CFaUserAlt = chakra(FaUserAlt);
+
 const CFaLock = chakra(FaLock);
+const CFaEmail = chakra(FaVoicemail)
+
 
 export const Login: VFC = memo(() => {
 
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
 
   const handleShowClick = () => setShowPassword(!showPassword);
+  const handleEmail = (e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)
+  const handlePassword = (e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)
+
+  const history = useHistory()
+
+  const { showMessage } = useMessage()
+
+  const createSessionParams = () => {
+    const sessionParams = new FormData()
+    sessionParams.append('session[email]', email)
+    sessionParams.append('session[password]', password)
+    return sessionParams
+  }
+
+  const sendSessionParams = () => {
+    const data = createSessionParams()
+    axios.post<User>('http://localhost:3001/api/v1/session', data)
+      .then((res) => {
+        if (res.data) {
+          history.push('/signup')
+          showMessage({ title: "logged in", status: "success" })
+        }
+      })
+      .catch((e) => console.error(e) )
+      showMessage({ title: "faild to login", status: "warning"})
+  }
 
   return (
     <Flex
@@ -40,9 +74,9 @@ export const Login: VFC = memo(() => {
                 <InputGroup>
                   <InputLeftElement
                     pointerEvents="none"
-                    children={<CFaUserAlt color="gray.300" />}
+                    children={<CFaEmail color="gray.300" />}
                   />
-                  <Input type="email" placeholder="email address" />
+                  <Input type="email" placeholder="email address" value={email} onChange={handleEmail} />
                 </InputGroup>
               </FormControl>
               <FormControl>
@@ -55,6 +89,8 @@ export const Login: VFC = memo(() => {
                   <Input
                     type={showPassword ? "text" : "password"}
                     placeholder="Password"
+                    value={password}
+                    onChange={handlePassword}
                   />
                   <InputRightElement width="4.5rem">
                     <Button h="1.75rem" size="sm" onClick={handleShowClick}>
@@ -67,8 +103,8 @@ export const Login: VFC = memo(() => {
                 </FormHelperText>
               </FormControl>
               <Button
+                onClick={sendSessionParams}
                 borderRadius={0}
-                type="submit"
                 variant="solid"
                 colorScheme="teal"
                 width="full"
