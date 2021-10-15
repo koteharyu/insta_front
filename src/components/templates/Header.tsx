@@ -23,17 +23,17 @@ export const Header: VFC = memo(() => {
         <Flex align="center" fontSize="sm" flexGrow={2} display={{ base: "none", md: "flex" }}>
           <Box pr={4}>
             <Link onClick={onClickTimeLine}>
-              Home
+              Time Line
             </Link>
           </Box>
           <Box pr={4}>
             <Link onClick={onClickLogin}>
-              Menu
+              Login
             </Link>
           </Box>
           <Box pr={4}>
             <Link onClick={onClickSignUp}>
-              Gournal
+              Sign Up
             </Link>
           </Box>
         </Flex>
