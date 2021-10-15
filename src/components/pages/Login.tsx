@@ -41,8 +41,10 @@ export const Login: VFC = memo(() => {
           showMessage({ title: "logged in", status: "success" })
         }
       })
-      .catch((e) => console.error(e) )
-      showMessage({ title: "faild to login", status: "warning"})
+      .catch((e) => {
+        console.error(e)
+        showMessage({ title: "faild to login", status: "warning"})
+      })
   }
 
   return (
