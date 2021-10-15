@@ -18,7 +18,7 @@ export const Header: VFC = memo(() => {
     <>
       <Flex as="nav" bg="white" color="gray.505" align="center" justify="space-between" padding={{ base: 3, md: 5 }}>
         <Flex align="center" as="a" mr={8} _hover={{ cursor: "pointer" }} onClick={onClickTimeLine}>
-          <Heading as="h1" fontSize={{ base: "md", md: "lg" }}>Sonu Sonu</Heading>
+          <Heading as="h1" fontSize={{ base: "md", md: "lg" }}>Insta</Heading>
         </Flex>
         <Flex align="center" fontSize="sm" flexGrow={2} display={{ base: "none", md: "flex" }}>
           <Box pr={4}>
